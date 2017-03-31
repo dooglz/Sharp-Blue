@@ -1,0 +1,3 @@
+namespace sb {
+void version();
+}
