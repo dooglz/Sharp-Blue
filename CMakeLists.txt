@@ -33,6 +33,19 @@ add_subdirectory(${SDL_SOURCE_DIR} ${SDL_BINARY_DIR})
 include_directories("${SDL_SOURCE_DIR}/include")
 #link_directories(${SDL_BINARY_DIR}/lib)
 
+#GLM options
+option(GLM_DYNAMIC_LIBRARY_ENABLE "" OFF)
+option(GLM_TEST_ENABLE_FAST_MATH "" ON)
+option(GLM_TEST_ENABLE_LANG_EXTENSIONS "" ON)
+option(GLM_TEST_ENABLE_SIMD_AVX2 "" ON)
+option(GLM_TEST_ENABLE_SIMD_SSE3 "" ON)
+download_project(PROJ glm
+        GIT_REPOSITORY      https://github.com/g-truc/glm.git
+        GIT_TAG              5dcc564
+        ${UPDATE_DISCONNECTED_IF_AVAILABLE}
+        )
+add_subdirectory(${glm_SOURCE_DIR} ${glm_BINARY_DIR})
+include_directories("${glm_SOURCE_DIR}")
 
 #GLEW options
 option(BUILD_UTILS "" OFF)
@@ -49,7 +62,13 @@ download_project(PROJ glew
 add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
 include_directories("${glew_SOURCE_DIR}/include")
 
-
+download_project(PROJ json
+GIT_REPOSITORY      https://github.com/nlohmann/json.git
+GIT_TAG             9ff0cc0
+${UPDATE_DISCONNECTED_IF_AVAILABLE}
+)
+add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
+include_directories("${json_SOURCE_DIR}/src")
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
 include_directories("src")

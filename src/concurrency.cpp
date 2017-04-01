@@ -35,7 +35,7 @@ shared_ptr<Task> GetTask(const unsigned int queueID) {
     qu.pop();
     qu.push(a);
     ss--;
-    std::cout << "Can't do yet: "<< a->id<<endl;
+
     if(ss <=1 ){return NULL;}
   }
 
@@ -56,6 +56,7 @@ std::shared_ptr<Task> makeTask(TaskFunction tf) {
 std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents) {
   auto t = std::shared_ptr<Task>(new Task());
   t->id = idpool++;
+  if(idpool %100 == 0){ std::cout << mainTasks.size() << endl;}
   t->tf = tf;
   t->data = nullptr;
   t->depcount.store(0);
@@ -70,7 +71,7 @@ std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents
   Task::~Task() {
     //std::cout << "Goodbye from task: "<< id<<endl;
     if (depcount > 0){
-      //Notify dpes that we're done
+      //Notify deps that we're done
       for (size_t i = 0; i < deps.size(); ++i) {
         deps[i]->parentcount--;
       }
