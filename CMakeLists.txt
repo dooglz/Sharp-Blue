@@ -33,6 +33,24 @@ add_subdirectory(${SDL_SOURCE_DIR} ${SDL_BINARY_DIR})
 include_directories("${SDL_SOURCE_DIR}/include")
 #link_directories(${SDL_BINARY_DIR}/lib)
 
+
+#GLEW options
+option(BUILD_UTILS "" OFF)
+option(BUILD_SHARED_LIBS "" ON)
+option(glew-cmake_BUILD_MULTI_CONTEXT "" OFF)
+option(glew-cmake_BUILD_SHARED "" ON)
+option(glew-cmake_BUILD_SINGLE_CONTEXT "" ON)
+option(glew-cmake_BUILD_STATIC "" OFF)
+download_project(PROJ glew
+        GIT_REPOSITORY      https://github.com/Perlmint/glew-cmake.git
+        GIT_TAG             7be0923
+        ${UPDATE_DISCONNECTED_IF_AVAILABLE}
+        )
+add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
+include_directories("${glew_SOURCE_DIR}/include")
+
+
+
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
 include_directories("src")
 add_library(sharp_blue ${SOURCE_FILES})
@@ -63,10 +81,10 @@ if(${MSVC})
   </Project>")
 		
   target_compile_options(sharp_blue PUBLIC /MP)
-  target_link_libraries(sharp_blue SDL2)
+  target_link_libraries(sharp_blue SDL2 libglew_shared)
 else()
-  target_link_libraries(sharp_blue SDL2)
+  target_link_libraries(sharp_blue SDL2 libglew_shared)
   target_link_libraries(sp_game sharp_blue)
 endif()
-add_dependencies(sharp_blue SDL2)
+add_dependencies(sharp_blue SDL2 libglew_shared)
 add_dependencies(sp_game sharp_blue)
