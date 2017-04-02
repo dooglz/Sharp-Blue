@@ -6,6 +6,7 @@
 #define SHARP_BLUE_ENTITY_H
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace sb {
 class Entity;

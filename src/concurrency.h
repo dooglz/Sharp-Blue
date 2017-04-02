@@ -6,6 +6,7 @@
 #define SHARP_BLUE_CONCURRENCY_H
 #include <atomic>
 #include <vector>
+#include <memory>
 
 namespace sb {
 namespace cc {

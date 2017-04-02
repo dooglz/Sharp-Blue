@@ -72,7 +72,14 @@ include_directories("${json_SOURCE_DIR}/src")
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
 include_directories("src")
-add_library(sharp_blue ${SOURCE_FILES})
+include (GenerateExportHeader)
+add_library(sharp_blue STATIC ${SOURCE_FILES})
+ GENERATE_EXPORT_HEADER( sharp_blue
+                           BASE_NAME sharp_blue
+                           EXPORT_MACRO_NAME sharp_blue_EXPORT
+                           EXPORT_FILE_NAME sharp_blue_Export.h
+                           STATIC_DEFINE sharp_blue_BUILT_AS_STATIC
+  )
 
 file(GLOB_RECURSE GAME_SOURCE_FILES game/*.cpp game/*.h)
 add_executable(sp_game ${GAME_SOURCE_FILES})
@@ -101,6 +108,7 @@ if(${MSVC})
 		
   target_compile_options(sharp_blue PUBLIC /MP)
   target_link_libraries(sharp_blue SDL2 libglew_shared)
+  target_link_libraries(sp_game sharp_blue)
 else()
   target_link_libraries(sharp_blue SDL2 libglew_shared)
   target_link_libraries(sp_game sharp_blue)
