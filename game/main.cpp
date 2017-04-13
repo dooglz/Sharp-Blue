@@ -1,8 +1,6 @@
 #include "sharp_blue.h"
 #include <iostream>
-
-
-
+#include <math.h> 
 
 void Update(double dt) {
   static unsigned char frame = 0;

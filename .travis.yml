@@ -1,0 +1,76 @@
+#########################
+# project configuration #
+#########################
+# C++ project, but if we specify it, travis overites our CXX ENV variables
+language: generic
+dist: trusty
+sudo: false
+
+before_install:
+  # Install a recent CMake
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      CMAKE_URL="https://cmake.org/files/v3.8/cmake-3.8.0-Linux-x86_64.tar.gz"
+      echo "pulling down cmake" ${CMAKE_URL}  
+      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+      export PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}
+    else
+      brew upgrade cmake || brew install cmake
+    fi
+  - cmake --version
+  
+   # Set env vars for C++ on mac
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+        export CXX=g++
+        export CC=gcc
+    fi
+  
+  
+################
+# build matrix #
+################
+matrix:
+  include:
+  # OSX / Clang
+  - os: osx
+    osx_image: xcode8.3
+
+  # Linux / GCC
+  - os: linux
+    env: COMPILER_NAME=gcc COMPILER=g++-6 CXX=g++-6 CC=gcc-6
+    addons:
+        apt:
+            sources: &sources
+                - llvm-toolchain-precise-3.8
+                - ubuntu-toolchain-r-test
+            packages:
+                - g++-6
+                - gcc-6
+
+  # Linux / Clang
+  - os: linux
+    env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8 LLVM_VERSION=3.8
+    addons:
+        apt:
+          packages:
+            - clang-3.8
+            - g++-6
+            - gcc-6
+          sources: *sources
+
+
+################
+# build script #
+################
+
+script:
+  # show OS/compiler version
+  - uname -a
+  - $CXX --version
+
+  # compile and execute 
+  - cmake --version
+  - mkdir -p build && cd build
+  - cmake .. 
+  - cmake --build . --target sp_game --config Release -- -j4

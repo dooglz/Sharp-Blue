@@ -88,6 +88,10 @@ add_executable(sp_game ${GAME_SOURCE_FILES})
 file(GLOB_RECURSE CMP_SOURCE_FILES game/components/*.cpp game/components/*.h)
 source_group("Game components" FILES ${CMP_SOURCE_FILES})
 
+
+set_property(TARGET sp_game PROPERTY CXX_STANDARD 14)
+set_property(TARGET sharp_blue PROPERTY CXX_STANDARD 14)
+
 #copy General resources to build post build script
 add_custom_command(TARGET sharp_blue POST_BUILD  
   COMMAND ${CMAKE_COMMAND} -E copy_directory  "${PROJECT_SOURCE_DIR}/res" $<TARGET_FILE_DIR:sharp_blue>/res)
