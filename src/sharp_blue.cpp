@@ -21,12 +21,16 @@ SDL_Window *window;
 atomic<bool> gotime(false);
 thread t_runner_1, t_runner_2;
 
+typedef std::chrono::high_resolution_clock Clock;
+
 void TaskRunner();
 
 void Task_EndFrame(void *arg);
 void MTask_PollEvents(void *arg);
 void MTask_Render(void *arg);
 void Task_GameLogic(void *arg);
+
+void(*gameTickFunc)(double);
 
 bool CheckGL() {
   GLenum err;
@@ -115,7 +119,7 @@ bool init() {
   if (CheckGL()) {
     return false;
   }
-
+  gameTickFunc = nullptr;
   return true;
 }
 
@@ -148,6 +152,11 @@ void MTask_Render(void *arg) {
 }
 
 void Task_GameLogic(void *arg) {
+  const auto now = Clock::now();
+  static auto old = now;
+  const auto dt = std::chrono::duration<double>(now - old).count();
+  old = now;
+  gameTickFunc(dt);
   this_thread::sleep_for(chrono::milliseconds(5));
  // cout << "GameLogic" << endl;
 }
@@ -172,6 +181,11 @@ void Start() {
   }
   t_runner_1.join();
   t_runner_2.join();
+}
+
+void SetTickFunc(void(*gt)(double))
+{
+	gameTickFunc = gt;
 }
 
 void TaskRunner() {

@@ -71,6 +71,7 @@ add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
 include_directories("${json_SOURCE_DIR}/src")
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
+file(GLOB_RECURSE CMP_SOURCE_FILES src/components/*.cpp src/components/*.h)
 include_directories("src")
 include (GenerateExportHeader)
 add_library(sharp_blue STATIC ${SOURCE_FILES})
@@ -80,9 +81,12 @@ add_library(sharp_blue STATIC ${SOURCE_FILES})
                            EXPORT_FILE_NAME sharp_blue_Export.h
                            STATIC_DEFINE sharp_blue_BUILT_AS_STATIC
   )
+ source_group("Standard components" FILES ${CMP_SOURCE_FILES})
 
 file(GLOB_RECURSE GAME_SOURCE_FILES game/*.cpp game/*.h)
 add_executable(sp_game ${GAME_SOURCE_FILES})
+file(GLOB_RECURSE CMP_SOURCE_FILES game/components/*.cpp game/components/*.h)
+source_group("Game components" FILES ${CMP_SOURCE_FILES})
 
 #copy General resources to build post build script
 add_custom_command(TARGET sharp_blue POST_BUILD  

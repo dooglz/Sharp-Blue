@@ -56,7 +56,7 @@ std::shared_ptr<Task> makeTask(TaskFunction tf) {
 std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents) {
   auto t = std::shared_ptr<Task>(new Task());
   t->id = idpool++;
-  if(idpool %100 == 0){ std::cout << mainTasks.size() << endl;}
+  //if(idpool %100 == 0){ std::cout << mainTasks.size() << endl;}
   t->tf = tf;
   t->data = nullptr;
   t->depcount.store(0);
