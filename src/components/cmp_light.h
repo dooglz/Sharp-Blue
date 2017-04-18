@@ -1,14 +1,10 @@
-//
-// Created by Sam Serrels on 01/04/2017.
-//
+#pragma once
+#include <Entity.h>
 
-#ifndef SHARP_BLUE_CMP_LIGHT_H
-#define SHARP_BLUE_CMP_LIGHT_H
-
-
-class cmp_light {
-
+namespace sb {
+class cmp_light : public Component {
+public:
+  cmp_light();
+  void Render() override;
 };
-
-
-#endif //SHARP_BLUE_CMP_LIGHT_H
+}

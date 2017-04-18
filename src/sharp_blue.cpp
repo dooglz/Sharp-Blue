@@ -10,11 +10,13 @@
 
 #include "json.hpp"
 
-
 using json = nlohmann::json;
 using namespace std;
 
 namespace sb {
+
+static std::shared_ptr<Level> currentLevel;
+
 unsigned int currentTick;
 unsigned int currentFrame;
 SDL_Window *window;
@@ -30,7 +32,8 @@ void MTask_PollEvents(void *arg);
 void MTask_Render(void *arg);
 void Task_GameLogic(void *arg);
 
-void(*gameTickFunc)(double);
+void (*gameTickFunc)(double);
+void (*gameStartupFunc)();
 
 bool CheckGL() {
   GLenum err;
@@ -120,6 +123,8 @@ bool init() {
     return false;
   }
   gameTickFunc = nullptr;
+
+  currentLevel = std::make_shared<Level>();
   return true;
 }
 
@@ -132,23 +137,29 @@ void MTask_PollEvents(void *arg) {
     if (Event.type == SDL_QUIT)
       gotime = false;
   }
- // cout << "poll" << endl;
+  // cout << "poll" << endl;
 }
 
 void Task_EndFrame(void *arg) {
   auto poll = cc::AddTask(0, cc::makeTask(MTask_PollEvents));
   auto logic = cc::AddTask(1, cc::makeTask(Task_GameLogic, {poll}));
   cc::AddTask(0, cc::makeTask(MTask_Render, {poll, logic}));
-  //cout << "End" << endl;
+  // cout << "End" << endl;
 }
 
 void MTask_Render(void *arg) {
+
+  for (const auto &a : *currentLevel->GetSceneList()) {
+    // Todo: Jobify this
+    a->Render();
+  }
+
   SDL_GL_SetSwapInterval(1);
   glClear(GL_COLOR_BUFFER_BIT);
   SDL_GL_SwapWindow(window);
   CheckGL();
   cc::AddTask(1, cc::makeTask(Task_EndFrame));
-  //cout << "Render" << endl;
+  // cout << "Render" << endl;
 }
 
 void Task_GameLogic(void *arg) {
@@ -156,9 +167,13 @@ void Task_GameLogic(void *arg) {
   static auto old = now;
   const auto dt = std::chrono::duration<double>(now - old).count();
   old = now;
+  for (const auto &a : *currentLevel->GetSceneList()) {
+    // Todo: Jobify this
+    a->Update(dt);
+  }
   gameTickFunc(dt);
   this_thread::sleep_for(chrono::milliseconds(5));
- // cout << "GameLogic" << endl;
+  // cout << "GameLogic" << endl;
 }
 
 void Start() {
@@ -168,6 +183,7 @@ void Start() {
   t_runner_1 = thread(TaskRunner);
   t_runner_2 = thread(TaskRunner);
 
+  // gameStartupFunc();
   // Main Thread Task Runner
   cc::AddTask(1, cc::makeTask(Task_EndFrame));
   shared_ptr<cc::Task> t;
@@ -183,10 +199,11 @@ void Start() {
   t_runner_2.join();
 }
 
-void SetTickFunc(void(*gt)(double))
-{
-	gameTickFunc = gt;
-}
+void SetTickFunc(void (*gt)(double)) { gameTickFunc = gt; }
+
+void SetStartupFunc(void (*func)()) { gameStartupFunc = func; }
+
+std::shared_ptr<sb::Level> GetLevel() { return currentLevel; }
 
 void TaskRunner() {
   shared_ptr<cc::Task> t;

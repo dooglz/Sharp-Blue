@@ -1,21 +1,17 @@
-//
-// Created by Sam Serrels on 01/04/2017.
-//
-
-#ifndef SHARP_BLUE_LEVEL_H
-#define SHARP_BLUE_LEVEL_H
+#pragma once
 #include "Entity.h"
 
 namespace sb {
 void LoadLevel();
 class Level {
 protected:
-	void(*gameUpdateFunc)(double);
-	void(*gameLoadInFunc)(double);
-	void(*gameLoadOutFunc)(double);
-	std::vector<Entity*> scenelist;
+  void (*gameUpdateFunc)(double);
+  void (*gameLoadInFunc)(double);
+  void (*gameLoadOutFunc)(double);
+  std::vector<std::unique_ptr<Entity>> scenelist;
 
+public:
+  void AddToScene(std::unique_ptr<Entity> ent);
+  std::vector<std::unique_ptr<Entity>> *GetSceneList();
 };
-
 }
-#endif //SHARP_BLUE_LEVEL_H

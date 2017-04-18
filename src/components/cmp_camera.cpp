@@ -3,3 +3,5 @@
 //
 
 #include "cmp_camera.h"
+
+sb::cmp_camera::cmp_camera() : Component("camera") {}

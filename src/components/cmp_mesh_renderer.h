@@ -1,14 +1,15 @@
-//
-// Created by Sam Serrels on 01/04/2017.
-//
+#pragma once
+#include "../Entity.h"
 
-#ifndef SHARP_BLUE_CMP_MESH_RENDERER_H
-#define SHARP_BLUE_CMP_MESH_RENDERER_H
+namespace sb {
+class cmp_mesh_renderer : public Component {
+protected:
+  void *MeshData;
 
+public:
+  cmp_mesh_renderer();
+  void SetMesh(const std::string &path);
 
-class cmp_mesh_renderer {
-
+  void Render() override;
 };
-
-
-#endif //SHARP_BLUE_CMP_MESH_RENDERER_H
+}

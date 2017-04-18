@@ -1,14 +1,10 @@
-//
-// Created by Sam Serrels on 01/04/2017.
-//
-
-#ifndef SHARP_BLUE_ENTITY_H
-#define SHARP_BLUE_ENTITY_H
+#pragma once
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace sb {
+
 class Entity;
 
 class Component {
@@ -41,14 +37,15 @@ public:
   void SetName(std::string const &name);
   virtual void Update(const double delta);
   virtual void Render();
-  void AddComponent(std::unique_ptr<Component> &c);
+  void AddComponent(std::unique_ptr<Component> &&c);
   void RemoveComponent(Component &c);
   const std::vector<std::unique_ptr<Component>> *GetComponents() const;
   std::vector<Component *> GetComponents(std::string const &name) const;
 
   template <typename T> T *const getComponent() {
     for (size_t i = 0; i < components_.size(); i++) {
-      if (&typeid(*components_[i]) == &typeid(T)) {
+      // const auto bb = *components_[i];
+      if (&typeid(T) == &typeid(components_[i].get())) {
         return static_cast<T *>(&*components_[i]);
       }
     }
@@ -67,4 +64,3 @@ public:
   }
 };
 }
-#endif // SHARP_BLUE_ENTITY_H

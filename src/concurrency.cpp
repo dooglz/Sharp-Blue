@@ -3,9 +3,9 @@
 //
 #include "concurrency.h"
 #include <atomic>
+#include <iostream>
 #include <mutex>
 #include <queue>
-#include <iostream>
 using namespace std;
 namespace sb {
 namespace cc {
@@ -13,12 +13,12 @@ queue<shared_ptr<Task>> mainTasks, tasks;
 mutex tmutx, mtmutx;
 atomic<unsigned long> idpool;
 
-  shared_ptr<Task> AddTask(const unsigned int queueID, shared_ptr<Task> tf) {
+shared_ptr<Task> AddTask(const unsigned int queueID, shared_ptr<Task> tf) {
   auto &mu = (queueID ? tmutx : mtmutx);
   auto &qu = (queueID ? tasks : mainTasks);
   lock_guard<mutex> lock(mu);
   qu.push(tf);
-    return tf;
+  return tf;
 }
 
 shared_ptr<Task> GetTask(const unsigned int queueID) {
@@ -29,14 +29,16 @@ shared_ptr<Task> GetTask(const unsigned int queueID) {
   if (ss < 1) {
     return NULL;
   }
-  while(qu.front()->parentcount > 0){
-    //haha there goes our perf.
+  while (qu.front()->parentcount > 0) {
+    // haha there goes our perf.
     auto a = move(qu.front());
     qu.pop();
     qu.push(a);
     ss--;
 
-    if(ss <=1 ){return NULL;}
+    if (ss <= 1) {
+      return NULL;
+    }
   }
 
   auto a = move(qu.front());
@@ -56,7 +58,7 @@ std::shared_ptr<Task> makeTask(TaskFunction tf) {
 std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents) {
   auto t = std::shared_ptr<Task>(new Task());
   t->id = idpool++;
-  //if(idpool %100 == 0){ std::cout << mainTasks.size() << endl;}
+  // if(idpool %100 == 0){ std::cout << mainTasks.size() << endl;}
   t->tf = tf;
   t->data = nullptr;
   t->depcount.store(0);
@@ -68,14 +70,14 @@ std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents
   return t;
 }
 
-  Task::~Task() {
-    //std::cout << "Goodbye from task: "<< id<<endl;
-    if (depcount > 0){
-      //Notify deps that we're done
-      for (size_t i = 0; i < deps.size(); ++i) {
-        deps[i]->parentcount--;
-      }
+Task::~Task() {
+  // std::cout << "Goodbye from task: "<< id<<endl;
+  if (depcount > 0) {
+    // Notify deps that we're done
+    for (size_t i = 0; i < deps.size(); ++i) {
+      deps[i]->parentcount--;
     }
   }
+}
 }
 }

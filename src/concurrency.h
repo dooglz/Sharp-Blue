@@ -1,12 +1,7 @@
-//
-// Created by Sam Serrels on 01/04/2017.
-//
-
-#ifndef SHARP_BLUE_CONCURRENCY_H
-#define SHARP_BLUE_CONCURRENCY_H
+#pragma once
 #include <atomic>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace sb {
 namespace cc {
@@ -27,8 +22,6 @@ std::shared_ptr<Task> makeTask(TaskFunction tf);
 std::shared_ptr<Task> makeTask(TaskFunction tf, std::vector<std::shared_ptr<Task>> parents);
 std::shared_ptr<Task> GetTask(const unsigned int queueID);
 std::shared_ptr<Task> AddTask(const unsigned int queueID, std::shared_ptr<Task> tf);
-  void DoTasks();
+void DoTasks();
 }
 }
-
-#endif // SHARP_BLUE_CONCURRENCY_H

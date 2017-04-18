@@ -3,6 +3,7 @@
 //
 
 #include "cmp_3d.h"
+#include <iostream>
 
 namespace sb {
 cmp_3d::cmp_3d() : Component("3D") {}
@@ -21,7 +22,7 @@ const glm::dvec3 cmp_3d::GetRotationV3() const { return glm::dvec3(); }
 
 const glm::dquat cmp_3d::GetRotation() const { return glm::dquat(); }
 
-const glm::dmat4 cmp_3d::GetTranform() { return glm::dmat4(); }
+const glm::dmat4 cmp_3d::GetTransform() { return glm::dmat4(); }
 
 const bool cmp_3d::IsVisible() const { return 0; }
 
@@ -36,4 +37,10 @@ void cmp_3d::SetRotation(const glm::dvec3 &v3) {}
 void cmp_3d::SetRotation(const glm::dquat &q) {}
 
 void cmp_3d::SetVisibility(const bool b) {}
+
+cmp_3d::cmp_3d(glm::dvec3 pos, glm::dvec3 rot, glm::dvec3 scale) : cmp_3d() {
+  SetPosition(pos);
+  SetRotation(rot);
+  SetScale(scale);
+}
 }
