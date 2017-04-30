@@ -5,6 +5,6 @@
 namespace sb {
 class data_ops {
 public:
-  static void *GetMesh(std::string path);
+  static void *GetMesh(const std::string& path);
 };
 }

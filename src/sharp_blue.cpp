@@ -2,6 +2,7 @@
 #include "GL/glew.h"
 #include "SDL.h"
 #include "concurrency.h"
+#include "Renderer.h"
 #include <atomic>
 #include <chrono>
 #include <iostream>
@@ -153,6 +154,8 @@ void MTask_Render(void *arg) {
     // Todo: Jobify this
     a->Render();
   }
+
+  Renderer::Dispatch();
 
   SDL_GL_SetSwapInterval(1);
   glClear(GL_COLOR_BUFFER_BIT);

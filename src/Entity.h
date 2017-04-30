@@ -1,6 +1,8 @@
 #pragma once
+#include <map>
 #include <memory>
 #include <string>
+#include <typeindex>
 #include <vector>
 
 namespace sb {
@@ -27,7 +29,8 @@ public:
 class Entity {
 protected:
   std::string name_;
-  std::vector<std::unique_ptr<Component>> components_;
+  using my_map = std::map<std::type_index, std::unique_ptr<Component>>;
+  my_map components;
 
 public:
   Entity();
@@ -37,25 +40,21 @@ public:
   void SetName(std::string const &name);
   virtual void Update(const double delta);
   virtual void Render();
-  void AddComponent(std::unique_ptr<Component> &&c);
-  void RemoveComponent(Component &c);
-  const std::vector<std::unique_ptr<Component>> *GetComponents() const;
-  std::vector<Component *> GetComponents(std::string const &name) const;
 
-  template <typename T> T *const getComponent() {
-    for (size_t i = 0; i < components_.size(); i++) {
-      // const auto bb = *components_[i];
-      if (&typeid(T) == &typeid(components_[i].get())) {
-        return static_cast<T *>(&*components_[i]);
-      }
-    }
-    return NULL;
+  template <typename T> T &GetComponent() noexcept {
+    return *static_cast<T *>(components[std::type_index(typeid(T))].get());
   }
 
+  template <typename T> void AddComponent(std::unique_ptr<T> component) noexcept {
+    components[std::type_index(typeid(T))] = std::move(component);
+  }
+
+  // void RemoveComponent(Component &c);
+
   // Will return a T component, or anything derived from a T component.
-  template <typename T> T *const getCompatibleComponent() {
-    for (size_t i = 0; i < components_.size(); i++) {
-      auto dd = dynamic_cast<T *>(&*components_[i]);
+  template <typename T> T *const GetCompatibleComponent() {
+    for (auto &c : components) {
+      auto dd = dynamic_cast<T *>(&(*c.second));
       if (dd) {
         return dd;
       }

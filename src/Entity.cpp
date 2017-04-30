@@ -37,22 +37,17 @@ const string Entity::GetName() const { return name_; }
 void Entity::SetName(string const &name) { name_ = name; }
 
 void Entity::Update(const double delta) {
-  for (auto &c : components_) {
-    c->Update(delta);
+  for (auto &c : components) {
+    c.second->Update(delta);
   }
 }
 
 void Entity::Render() {
-  for (auto &c : components_) {
-    c->Render();
+  for (auto &c : components) {
+    c.second->Render();
   }
 }
-
-void Entity::AddComponent(unique_ptr<Component> &&c) {
-  c->SetParent(this);
-  components_.push_back(move(c));
-}
-
+/*
 void Entity::RemoveComponent(Component &c) {
   // Todo: Test This
   auto position =
@@ -61,20 +56,6 @@ void Entity::RemoveComponent(Component &c) {
     components_.erase(position);
   }
 }
+*/
 
-// be careful what you do with this function...
-vector<Component *> Entity::GetComponents(string const &name) const {
-  vector<Component *> list;
-  if (components_.size() < 1) {
-    return list;
-  }
-  for (auto &c : components_) {
-    if (c->token_ == name) {
-      list.push_back(c.get()); // It's not like we want to make safe programs anyway...
-    }
-  }
-  return list;
-}
-
-const vector<unique_ptr<Component>> *Entity::GetComponents() const { return &components_; }
 }

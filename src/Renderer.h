@@ -18,5 +18,6 @@ public:
   };
   static void AddLight(const LightData &ld, const glm::vec3 &position, const glm::quat &rot);
   static void Render(void *MeshData, const glm::mat4 &MVP, const RenderFlags &Flags);
+  static void Dispatch();
 };
 }

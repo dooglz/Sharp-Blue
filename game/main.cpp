@@ -11,15 +11,13 @@
 using namespace std;
 using namespace glm;
 
-#define MAKEMOVE(TYPE, INST) move(unique_ptr<TYPE>(new INST))
-
 void CreateScene() {
   //  ########### Build a Box ###########
 
-  auto box = unique_ptr<sb::Entity>(new sb::Entity());
+  auto box = make_unique<sb::Entity>();
   box->SetName("Box");
   // Add 3D component so it exists in space
-  box->AddComponent(MAKEMOVE(sb::Component, sb::cmp_3d()));
+  box->AddComponent(make_unique<sb::cmp_3d>());
   // Add mesh renderer
   auto mr = make_unique<sb::cmp_mesh_renderer>();
   mr->SetMesh("cube.obj");
@@ -28,22 +26,22 @@ void CreateScene() {
   sb::GetLevel()->AddToScene(move(box));
 
   //  ########### Build a Camera ###########
-  auto camera = unique_ptr<sb::Entity>(new sb::Entity());
+  auto camera = make_unique<sb::Entity>();
   camera->SetName("Camera");
   // Add 3D component so it exists in space
-  camera->AddComponent(MAKEMOVE(sb::Component, sb::cmp_3d(vec3(10.0f), vec3(-1.0f), vec3(1.0f))));
+  camera->AddComponent(make_unique<sb::cmp_3d>(vec3(10.0f), vec3(-1.0f), vec3(1.0f)));
   // Add camera component
-  camera->AddComponent(MAKEMOVE(sb::Component, sb::cmp_camera()));
+  camera->AddComponent(make_unique<sb::cmp_camera>());
   // Add to scene
   sb::GetLevel()->AddToScene(move(camera));
 
   //  ########### Build a Lamp ###########
-  auto lamp = unique_ptr<sb::Entity>(new sb::Entity());
+  auto lamp = make_unique<sb::Entity>();
   lamp->SetName("lamp");
   // Add 3D component so it exists in space
-  lamp->AddComponent(MAKEMOVE(sb::Component, sb::cmp_3d(vec3(0, 10.0f, 0), vec3(0, -1.0f, 0), vec3(1.0f))));
+  lamp->AddComponent(make_unique<sb::cmp_3d>(vec3(0, 10.0f, 0), vec3(0, -1.0f, 0), vec3(1.0f)));
   // Add light component
-  lamp->AddComponent(MAKEMOVE(sb::Component, sb::cmp_light()));
+  lamp->AddComponent(make_unique<sb::cmp_light>());
   // Add to scene
   sb::GetLevel()->AddToScene(move(lamp));
 }
