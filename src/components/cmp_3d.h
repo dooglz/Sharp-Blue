@@ -45,4 +45,4 @@ public:
 
   void SetVisibility(const bool b);
 };
-}
+} // namespace sb

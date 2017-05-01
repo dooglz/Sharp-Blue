@@ -3,34 +3,58 @@
 //
 
 #include "data_ops.h"
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
 #include <GL/glew.h>
+#include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+#include <assimp/scene.h>
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <ogl/ogl_utils.h>
+#include <sstream>
 namespace sb {
 using namespace std;
+
 inline bool check_file_exists(const std::string &filename) {
   std::ifstream file(filename);
   return file.good();
 }
 
-const string pathMangle(const string &path) { return path; }
+bool Findfile(string &path) {
+  static const std::string filedirs[] = {"", "res/", "res/mdl/", "res/fonts/", "res/sound/", "res/shaders/ogl/"};
+  for (const auto s : filedirs) {
+    ifstream inFile((s + path).c_str(), ifstream::in);
+    if (inFile.good()) {
+      path = s + path;
+      return true;
+    }
+  }
+  return false;
+}
 
-Mesh *data_ops::GetMesh(const std::string &p) {
-  // return nullptr;
-  const string path = pathMangle(p);
+bool read_file(const std::string &filename, std::string &content) {
+  // Create filestream
+  std::ifstream file(filename, std::ios_base::in);
+  // Check that file exists.  If not, return false
+  if (file.bad())
+    return false;
 
-  // Check that file exists
+  // File is good.  Read contents
+  std::stringstream buffer;
+  buffer << file.rdbuf();
 
-  if (!check_file_exists(path)) {
-    // Failed to read file.  Display error
-    std::cerr << "ERROR - could not load model file " << path << std::endl;
-    std::cerr << "File Does Not Exist" << std::endl;
-    // Throw exception
+  // Get contents from the file
+  content = buffer.str();
+
+  // Close file and return true
+  file.close();
+  return true;
+}
+
+Mesh *data_ops::GetMesh(const std::string &file) {
+  string path = file;
+  if (!Findfile(path)) {
+    std::cerr << "ERROR - could not find file " << path << std::endl;
     throw std::runtime_error("Error loading model file");
   }
 
@@ -118,4 +142,27 @@ Mesh *data_ops::GetMesh(const std::string &p) {
 
   return ret;
 }
+
+Effect *data_ops::GetEffect(const std::string &path) {
+  string vert_path = path + ".vert";
+  string frag_path = path + ".frag";
+  string geom_path = path + ".geom";
+  string vert_file, frag_file, geom_file;
+
+  if (!Findfile(vert_path) || !read_file(vert_path, vert_file)) {
+    throw std::runtime_error("Error loading vert");
+  }
+
+  if (!Findfile(frag_path) || !read_file(frag_path, frag_file)) {
+    throw std::runtime_error("Error loading vert");
+  }
+
+  auto e = new Effect();
+  e->name = path;
+  e->has_geometry = (Findfile(geom_path) && read_file(geom_path, geom_file));
+
+  ogl::LoadEffect(e, vert_file, frag_file, geom_file);
+
+  return e;
 }
+} // namespace sb

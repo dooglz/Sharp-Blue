@@ -16,7 +16,7 @@ protected:
 
 public:
   std::string token_;
-  Component(const std::string &token);
+  explicit Component(const std::string &token);
   virtual ~Component();
   virtual void Update(double delta){};
   virtual void Render(){};
@@ -62,4 +62,4 @@ public:
     return NULL;
   }
 };
-}
+} // namespace sb

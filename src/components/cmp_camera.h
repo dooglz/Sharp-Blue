@@ -6,4 +6,4 @@ class cmp_camera : public Component {
 public:
   cmp_camera();
 };
-}
+} // namespace sb

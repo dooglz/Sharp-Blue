@@ -10,8 +10,7 @@ namespace sb {
 // using namespace glm;
 using namespace std;
 
-Component::Component(const string &token) {
-  token_ = token;
+Component::Component(const string &token) : token_(token) {
   Ent_ = nullptr;
   active_ = false;
 }
@@ -58,4 +57,4 @@ void Entity::RemoveComponent(Component &c) {
 }
 */
 
-}
+} // namespace sb

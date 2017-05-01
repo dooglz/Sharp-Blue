@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 
 namespace sb {
+struct Mesh;
+struct Effect;
 class Renderer {
 public:
   struct RenderFlags {
@@ -17,7 +19,7 @@ public:
     glm::vec3 colour = glm::vec3(0.f);
   };
   static void AddLight(const LightData &ld, const glm::vec3 &position, const glm::quat &rot);
-  static void Render(void *MeshData, const glm::mat4 &MVP, const RenderFlags &Flags);
+  static void Render(Mesh *MeshData, Effect *eff, const glm::mat4 &MVP, const RenderFlags &Flags);
   static void Dispatch();
 };
-}
+} // namespace sb

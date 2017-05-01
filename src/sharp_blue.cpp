@@ -1,8 +1,8 @@
 #include "sharp_blue.h"
 #include "GL/glew.h"
+#include "Renderer.h"
 #include "SDL.h"
 #include "concurrency.h"
-#include "Renderer.h"
 #include <atomic>
 #include <chrono>
 #include <iostream>
@@ -45,20 +45,33 @@ bool CheckGL() {
   }
   return ret;
 }
-
+const string severityLevel(GLenum severity) {
+  switch (severity) {
+  case GL_DEBUG_SEVERITY_LOW:
+    return "Low Severity Error";
+  case GL_DEBUG_SEVERITY_MEDIUM:
+    return "MEDIUM Severity Error";
+  case GL_DEBUG_SEVERITY_HIGH:
+    return "HIGH SEVERITY ERROR";
+  case GL_DEBUG_SEVERITY_NOTIFICATION:
+    return "Notification";
+  default:
+    return "Error";
+  }
+}
 void DebugCallbackAMD(GLuint id, GLenum category, GLenum severity, GLsizei length, const GLchar *message,
                       GLvoid *userParam) {
-  printf("\nAn OGL AMD error has occured: %s\n", message);
+  cerr << "An OGL AMD " << severityLevel(severity) << " has occured:\n" << message << "\n\n";
 }
 
 void DebugCallbackARB(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message,
                       GLvoid *userParam) {
-  printf("\nAn OGL ARB error has occured: %s\n", message);
+  cerr << "An OGL ARB " << severityLevel(severity) << " has occured:\n" << message << "\n\n";
 }
 
 void printOutKhrDebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                              const GLchar *message, const void *userParam) {
-  printf("\nAn OGL KHR error has occured: %s\n", message);
+  cerr << "An OGL KHR " << severityLevel(severity) << " has occured:\n" << message << "\n\n";
 }
 
 static void GlewInfo() {
@@ -119,7 +132,7 @@ bool init() {
     glDebugMessageCallback((GLDEBUGPROC)printOutKhrDebugMessage, 0);
     CheckGL();
   }
-
+  glViewport(0, 0, 1280, 720);
   if (CheckGL()) {
     return false;
   }
@@ -149,6 +162,8 @@ void Task_EndFrame(void *arg) {
 }
 
 void MTask_Render(void *arg) {
+  glClearColor(0.0, 1.0, 1.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT);
 
   for (const auto &a : *currentLevel->GetSceneList()) {
     // Todo: Jobify this
@@ -158,7 +173,7 @@ void MTask_Render(void *arg) {
   Renderer::Dispatch();
 
   SDL_GL_SetSwapInterval(1);
-  glClear(GL_COLOR_BUFFER_BIT);
+
   SDL_GL_SwapWindow(window);
   CheckGL();
   cc::AddTask(1, cc::makeTask(Task_EndFrame));
@@ -219,4 +234,4 @@ void TaskRunner() {
     }
   }
 }
-}
+} // namespace sb

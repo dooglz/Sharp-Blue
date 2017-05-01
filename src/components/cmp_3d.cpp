@@ -6,7 +6,7 @@
 #include <iostream>
 
 namespace sb {
-cmp_3d::cmp_3d() : Component("3D") {}
+cmp_3d::cmp_3d() : changed_(false), Component("3D") {}
 
 cmp_3d::~cmp_3d() {}
 
@@ -43,4 +43,4 @@ cmp_3d::cmp_3d(glm::dvec3 pos, glm::dvec3 rot, glm::dvec3 scale) : cmp_3d() {
   SetRotation(rot);
   SetScale(scale);
 }
-}
+} // namespace sb

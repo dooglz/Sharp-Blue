@@ -174,7 +174,19 @@ if(${MSVC})
       <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     </PropertyGroup>
   </Project>")
-		
+
+	file( WRITE "${CMAKE_CURRENT_BINARY_DIR}/sp_game.vcxproj.user" 
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+    <Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
+    <PropertyGroup Condition=\"'$(Configuration)|$(Platform)'=='Debug|x64'\">
+      <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
+      <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    </PropertyGroup>
+    <PropertyGroup Condition=\"'$(Configuration)|$(Platform)'=='Release|x64'\">
+      <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
+      <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    </PropertyGroup>
+  </Project>")
   target_compile_options(sharp_blue PUBLIC /MP)
   target_link_libraries(sharp_blue SDL2 libglew_shared assimp)
   target_link_libraries(sp_game sharp_blue)

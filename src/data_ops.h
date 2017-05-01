@@ -1,11 +1,18 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
 
+namespace sb {
+struct Effect {
+  std::string name;
+  bool has_geometry;
+  bool is_compute;
+  void *GpuData;
+};
 
-struct Mesh{
+struct Mesh {
   std::vector<glm::vec3> positions;
   glm::vec3 min;
   glm::vec3 max;
@@ -13,12 +20,12 @@ struct Mesh{
   std::vector<glm::vec3> normals;
   std::vector<glm::vec2> tex_coords;
   std::vector<unsigned int> indices;
-  void* GpuData;
+  void *GpuData;
 };
 
-namespace sb {
 class data_ops {
 public:
-  static Mesh* GetMesh(const std::string& path);
+  static Mesh *GetMesh(const std::string &path);
+  static Effect *GetEffect(const std::string &path);
 };
-}
+} // namespace sb

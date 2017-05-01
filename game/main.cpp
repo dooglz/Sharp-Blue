@@ -20,7 +20,8 @@ void CreateScene() {
   box->AddComponent(make_unique<sb::cmp_3d>());
   // Add mesh renderer
   auto mr = make_unique<sb::cmp_mesh_renderer>();
-  mr->SetMesh("cube.obj");
+  mr->SetMesh("sphereI2.obj");
+  mr->SetEffect("basic");
   box->AddComponent(move(mr));
   // Add to scene
   sb::GetLevel()->AddToScene(move(box));

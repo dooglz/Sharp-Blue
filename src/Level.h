@@ -14,4 +14,4 @@ public:
   void AddToScene(std::unique_ptr<Entity> ent);
   std::vector<std::unique_ptr<Entity>> *GetSceneList();
 };
-}
+} // namespace sb

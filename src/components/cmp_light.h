@@ -7,4 +7,4 @@ public:
   cmp_light();
   void Render() override;
 };
-}
+} // namespace sb

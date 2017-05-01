@@ -7,11 +7,13 @@
 #include <Renderer.h>
 #include <data_ops.h>
 
-sb::cmp_mesh_renderer::cmp_mesh_renderer() : Component("Mesh Renderer") {}
+sb::cmp_mesh_renderer::cmp_mesh_renderer() : mesh(nullptr), Component("Mesh Renderer") {}
 
-void sb::cmp_mesh_renderer::SetMesh(const std::string &path) { MeshData = data_ops::GetMesh(path); }
+void sb::cmp_mesh_renderer::SetMesh(const std::string &path) { mesh = data_ops::GetMesh(path); }
+
+void sb::cmp_mesh_renderer::SetEffect(const std::string &path) { effect = data_ops::GetEffect(path); }
 
 void sb::cmp_mesh_renderer::Render() {
   Component::Render();
-  Renderer::Render(MeshData, glm::mat4(), Renderer::RenderFlags());
+  Renderer::Render(mesh, effect, glm::mat4(), Renderer::RenderFlags());
 }
