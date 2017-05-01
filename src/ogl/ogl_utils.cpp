@@ -302,7 +302,7 @@ void LoadEffect(Effect *eff, const std::string &vert, const std::string &frag, c
 void Render(Mesh *msh, Effect *eff, glm::mat4 MVP) {
   glm::mat4 proj = glm::perspective(1.0472f, (16.0f / 9.0f), 2.414f, 1000.0f);
   glm::mat4 view = glm::lookAt(glm::vec3(2.0f), glm::vec3(), glm::vec3(0, 1.0f, 0));
-  MVP = proj * view;
+  MVP = proj * view * MVP;
   ogl_mesh *om = (ogl_mesh *)msh->GpuData;
   ogl_shader_program *sp = (ogl_shader_program *)eff->GpuData;
 

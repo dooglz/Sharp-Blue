@@ -53,6 +53,8 @@ void Update(double dt) {
     cout << "fps:" << floor(1.0 / dt) << endl;
     frame = 0;
   }
+  auto box = sb::GetLevel()->GetEnt("Box");
+  box->GetComponent<sb::cmp_3d>().Rotate(glm::vec3(0, dt, 0));
 }
 
 int main(int argc, char *argv[]) {

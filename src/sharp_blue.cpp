@@ -162,9 +162,10 @@ void Task_EndFrame(void *arg) {
 }
 
 void MTask_Render(void *arg) {
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
   glClearColor(0.0, 1.0, 1.0, 0.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   for (const auto &a : *currentLevel->GetSceneList()) {
     // Todo: Jobify this
     a->Render();

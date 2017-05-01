@@ -5,6 +5,7 @@
 #include "cmp_mesh_renderer.h"
 #include <Entity.h>
 #include <Renderer.h>
+#include <components/cmp_3d.h>
 #include <data_ops.h>
 
 sb::cmp_mesh_renderer::cmp_mesh_renderer() : mesh(nullptr), Component("Mesh Renderer") {}
@@ -15,5 +16,6 @@ void sb::cmp_mesh_renderer::SetEffect(const std::string &path) { effect = data_o
 
 void sb::cmp_mesh_renderer::Render() {
   Component::Render();
-  Renderer::Render(mesh, effect, glm::mat4(), Renderer::RenderFlags());
+  const auto mvp = Ent_->GetComponent<sb::cmp_3d>().GetTransform();
+  Renderer::Render(mesh, effect, mvp, Renderer::RenderFlags());
 }

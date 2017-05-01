@@ -13,5 +13,6 @@ protected:
 public:
   void AddToScene(std::unique_ptr<Entity> ent);
   std::vector<std::unique_ptr<Entity>> *GetSceneList();
+  const Entity *const GetEnt(const std::string &name) const;
 };
 } // namespace sb

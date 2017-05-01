@@ -14,7 +14,15 @@
 #include <sstream>
 namespace sb {
 using namespace std;
-
+using namespace glm;
+const static glm::vec4 coloursA[3] = {vec4(0.65f, 0.81f, 0.89f, 1.0f), vec4(0.12f, 0.47f, 0.71f, 1.0f),
+                                      vec4(0.7f, 0.87f, 0.54f, 1.0f)};
+const static glm::vec4 coloursB[3] = {vec4(0.11f, 0.62f, 0.47f, 1.0f), vec4(0.85f, 0.37f, 0.01f, 1.0f),
+                                      vec4(0.46f, 0.44f, 0.7f, 1.0f)};
+const static glm::vec4 coloursC[3] = {vec4(0.4f, 0.76f, 0.65f, 1.0f), vec4(0.99f, 0.55f, 0.38f, 1.0f),
+                                      vec4(0.55f, 0.63f, 0.8f, 1.0f)};
+const static glm::vec4 coloursD[3] = {vec4(0.533f, 0.898f, 0.231, 1.0f), vec4(1.0f, 0.698f, 0.259, 1.0f),
+                                      vec4(0.412f, 0.227f, 0.702f, 1.0f)};
 inline bool check_file_exists(const std::string &filename) {
   std::ifstream file(filename);
   return file.good();
@@ -101,7 +109,7 @@ Mesh *data_ops::GetMesh(const std::string &file) {
     // Otherwise just push back grey
     else
       for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
-        ret->colours.push_back(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+        ret->colours.push_back(coloursD[i % 3]);
     // If we have normals, then add to normal data
     if (mesh->HasNormals())
       for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {

@@ -38,10 +38,15 @@ public:
   void SetScale(const glm::dvec3 &v3);
 
   void SetPosition(const glm::dvec3 &v3);
+  void Move(const glm::dvec3 &v3);
 
   void SetRotation(const glm::dvec3 &v3);
 
   void SetRotation(const glm::dquat &q);
+
+  void Rotate(const glm::dvec3 &v3);
+
+  void Rotate(const glm::dquat &q);
 
   void SetVisibility(const bool b);
 };

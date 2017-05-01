@@ -27,7 +27,7 @@ Entity *Component::GetParent() const { return Ent_; }
 
 //############## Entity ###################
 
-Entity::Entity() {}
+Entity::Entity() { components.clear(); }
 
 Entity::~Entity() {}
 

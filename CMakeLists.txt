@@ -131,7 +131,9 @@ include_directories("${assimp_SOURCE_DIR}/include")
 
 #---------------- ASSIMP
 
-file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
+
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h res/shaders/*.vert res/shaders/*.frag res/shaders/*.geom res/shaders/*.comp)
+file(GLOB_RECURSE SHADER_FILES res/shaders/*.vert res/shaders/*.frag res/shaders/*.geom res/shaders/*.comp)
 file(GLOB_RECURSE CMP_SOURCE_FILES src/components/*.cpp src/components/*.h)
 include_directories("src")
 include (GenerateExportHeader)
@@ -143,6 +145,8 @@ add_library(sharp_blue STATIC ${SOURCE_FILES})
                            STATIC_DEFINE sharp_blue_BUILT_AS_STATIC
   )
  source_group("Standard components" FILES ${CMP_SOURCE_FILES})
+ source_group("Shaders" FILES ${SHADER_FILES})
+
 
 file(GLOB_RECURSE GAME_SOURCE_FILES game/*.cpp game/*.h)
 add_executable(sp_game ${GAME_SOURCE_FILES})
