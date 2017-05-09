@@ -199,7 +199,6 @@ void LoadEffect(Effect *eff, const std::string &vert, const std::string &frag, c
       // Display error,Throw exception, Todo: is this redundant?
       std::cerr << "ERROR - could not compile file, shader " << eff->name << std::endl;
       throw std::runtime_error("Error adding shader to effect");
-      return;
     }
     // We have tried to compile the shader.  Now check if compilation was successful.
     GLint compiled;
@@ -221,7 +220,6 @@ void LoadEffect(Effect *eff, const std::string &vert, const std::string &frag, c
       glDeleteShader(id);
       // Throw exception
       throw std::runtime_error("Error adding shader to effect");
-      return;
     }
   }
   ogl_shader_program *prog = new ogl_shader_program();
@@ -300,11 +298,9 @@ void LoadEffect(Effect *eff, const std::string &vert, const std::string &frag, c
 }
 
 void Render(Mesh *msh, Effect *eff, glm::mat4 MVP) {
-  glm::mat4 proj = glm::perspective(1.0472f, (16.0f / 9.0f), 2.414f, 1000.0f);
-  glm::mat4 view = glm::lookAt(glm::vec3(2.0f), glm::vec3(), glm::vec3(0, 1.0f, 0));
-  MVP = proj * view * MVP;
-  ogl_mesh *om = (ogl_mesh *)msh->GpuData;
-  ogl_shader_program *sp = (ogl_shader_program *)eff->GpuData;
+  // MVP = proj * view * MVP;
+  ogl_mesh *om = static_cast<ogl_mesh *>(msh->GpuData);
+  ogl_shader_program *sp = static_cast<ogl_shader_program *>(eff->GpuData);
 
   glUseProgram(sp->program);
   auto loc = glGetUniformLocation(sp->program, "MVP");

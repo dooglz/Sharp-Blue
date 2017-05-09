@@ -20,7 +20,7 @@ struct Rjob {
 
 std::vector<unique_ptr<Rjob>> jobs;
 
-void sb::Renderer::Render(Mesh *mesh, Effect *eff, const glm::mat4 &MVP, const sb::Renderer::RenderFlags &Flags) {
+void Renderer::Render(Mesh *mesh, Effect *eff, const glm::mat4 &MVP, const sb::Renderer::RenderFlags &Flags) {
   jobs.push_back(make_unique<Rjob>(mesh, eff, MVP, Flags));
 }
 

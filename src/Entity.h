@@ -41,12 +41,12 @@ public:
   virtual void Update(const double delta);
   virtual void Render();
 
-  template <typename T> T &GetComponent() const noexcept{
+  template <typename T> T &GetComponent() const noexcept {
     return *static_cast<T *>(components.at(std::type_index(typeid(T))).get());
   }
 
   template <typename T> void AddComponent(std::unique_ptr<T> component) noexcept {
-    Component* a = component.get();
+    Component *a = component.get();
     a->SetParent(this);
     components[std::type_index(typeid(T))] = std::move(component);
   }

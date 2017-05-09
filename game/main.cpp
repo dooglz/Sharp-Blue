@@ -33,6 +33,7 @@ void CreateScene() {
   camera->AddComponent(make_unique<sb::cmp_3d>(vec3(10.0f), vec3(-1.0f), vec3(1.0f)));
   // Add camera component
   camera->AddComponent(make_unique<sb::cmp_camera>());
+  camera->GetComponent<sb::cmp_camera>().SetActive();
   // Add to scene
   sb::GetLevel()->AddToScene(move(camera));
 
