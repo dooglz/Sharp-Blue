@@ -70,6 +70,17 @@ std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents
   return t;
 }
 
+void PurgeTasks() {
+  {
+    lock_guard<mutex> lock(tmutx);
+    tasks = {};
+  }
+  {
+    lock_guard<mutex> lock(mtmutx);
+    mainTasks = {};
+  }
+}
+
 Task::~Task() {
   // std::cout << "Goodbye from task: "<< id<<endl;
   if (depcount > 0) {

@@ -17,6 +17,6 @@ void sb::cmp_mesh_renderer::SetEffect(const std::string &path) { effect = data_o
 
 void sb::cmp_mesh_renderer::Render() {
   Component::Render();
-  const glm::mat4 mvp = sb::cmp_camera::activeCam->GetVP() * Ent_->GetComponent<sb::cmp_3d>().GetTransform();
+  const glm::mat4 mvp = sb::cmp_camera::GetActiveCam().GetVP() * Ent_->GetComponent<sb::cmp_3d>().GetTransform();
   Renderer::Render(mesh, effect, mvp, Renderer::RenderFlags());
 }

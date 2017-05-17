@@ -15,5 +15,9 @@ const Entity *const Level::GetEnt(const std::string &name) const {
       return e.get();
     }
   }
+  return nullptr;
 }
+
+Level::~Level() { scenelist.clear(); }
+
 } // namespace sb

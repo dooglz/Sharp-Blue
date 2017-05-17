@@ -5,6 +5,7 @@
 #include "Entity.h"
 //#include "game.h"
 #include <algorithm>
+#include <iostream>
 //#include <glm/gtx/transform.hpp>
 namespace sb {
 // using namespace glm;
@@ -15,7 +16,12 @@ Component::Component(const string &token) : token_(token) {
   active_ = false;
 }
 
-Component::~Component() {}
+Component::~Component() {
+  cout << "Goodbye from Component: " << token_ << endl;
+  Ent_ = nullptr;
+  active_ = false;
+  token_.clear();
+}
 
 bool Component::IsActive() { return active_; }
 
@@ -29,7 +35,10 @@ Entity *Component::GetParent() const { return Ent_; }
 
 Entity::Entity() { components.clear(); }
 
-Entity::~Entity() {}
+Entity::~Entity() {
+  components.clear();
+  cout << "Goodbye from Entity: " << name_ << endl;
+}
 
 const string Entity::GetName() const { return name_; }
 

@@ -145,11 +145,15 @@ bool init() {
 void OnEvent(SDL_Event *Event) {}
 
 void MTask_PollEvents(void *arg) {
-  SDL_Event Event;
-  while (SDL_PollEvent(&Event) != 0) {
-    OnEvent(&Event);
-    if (Event.type == SDL_QUIT)
-      gotime = false;
+  SDL_Event event;
+  while (SDL_PollEvent(&event) != 0) {
+    OnEvent(&event);
+    if (event.type == SDL_QUIT) {
+      Shutdown();
+    }
+    if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE) {
+      Shutdown();
+    }
   }
   // cout << "poll" << endl;
 }
@@ -214,8 +218,13 @@ void Start() {
       t->tf(nullptr);
     }
   }
+
   t_runner_1.join();
   t_runner_2.join();
+  cc::PurgeTasks();
+  // TODO: clear all OpenGL resources
+  currentLevel.reset();
+  cout << "Goodbye from Engine Code" << endl;
 }
 
 void SetTickFunc(void (*gt)(double)) { gameTickFunc = gt; }
@@ -223,6 +232,8 @@ void SetTickFunc(void (*gt)(double)) { gameTickFunc = gt; }
 void SetStartupFunc(void (*func)()) { gameStartupFunc = func; }
 
 std::shared_ptr<sb::Level> GetLevel() { return currentLevel; }
+
+void Shutdown() { gotime = false; }
 
 void TaskRunner() {
   shared_ptr<cc::Task> t;

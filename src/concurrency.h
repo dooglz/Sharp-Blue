@@ -23,5 +23,6 @@ std::shared_ptr<Task> makeTask(TaskFunction tf, std::vector<std::shared_ptr<Task
 std::shared_ptr<Task> GetTask(const unsigned int queueID);
 std::shared_ptr<Task> AddTask(const unsigned int queueID, std::shared_ptr<Task> tf);
 void DoTasks();
+void PurgeTasks();
 } // namespace cc
 } // namespace sb
