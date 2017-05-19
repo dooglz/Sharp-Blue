@@ -4,6 +4,7 @@
 #include <components/cmp_camera.h>
 #include <components/cmp_light.h>
 #include <components/cmp_mesh_renderer.h>
+#include <components/cmp_motor_fps.h>
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -34,6 +35,7 @@ void CreateScene() {
   // Add camera component
   camera->AddComponent(make_unique<sb::cmp_camera>());
   camera->GetComponent<sb::cmp_camera>().SetActive();
+  camera->AddComponent(make_unique<sb::cmp_motor_fps>());
   // Add to scene
   sb::GetLevel()->AddToScene(move(camera));
 

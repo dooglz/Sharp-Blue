@@ -73,11 +73,15 @@ std::shared_ptr<Task> makeTask(TaskFunction tf, vector<shared_ptr<Task>> parents
 void PurgeTasks() {
   {
     lock_guard<mutex> lock(tmutx);
-    tasks = {};
+    // tasks = {};
+    while (!tasks.empty())
+      tasks.pop();
   }
   {
     lock_guard<mutex> lock(mtmutx);
-    mainTasks = {};
+    // mainTasks = {};
+    while (!mainTasks.empty())
+      mainTasks.pop();
   }
 }
 

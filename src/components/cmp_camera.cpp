@@ -2,6 +2,7 @@
 // Created by Sam Serrels on 01/04/2017.
 //
 #include "cmp_camera.h"
+#include "cmp_3d.h"
 #include <glm/gtc/matrix_transform.hpp>
 sb::cmp_camera *sb::cmp_camera::activeCam_ = nullptr;
 void sb::cmp_camera::SetActive() { activeCam_ = this; }
@@ -26,3 +27,9 @@ sb::cmp_camera::~cmp_camera() {
 }
 
 sb::cmp_camera &sb::cmp_camera::GetActiveCam() { return *activeCam_; }
+
+void sb::cmp_camera::Update(double delta) {
+  Component::Update(delta);
+  const auto trn = glm::vec3(Ent_->GetComponent<sb::cmp_3d>().GetPosition());
+  viewMat_ = glm::lookAt(trn, glm::vec3(), glm::vec3(0, 1.0f, 0));
+}

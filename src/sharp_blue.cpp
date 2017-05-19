@@ -1,5 +1,6 @@
 #include "sharp_blue.h"
 #include "GL/glew.h"
+#include "Input.h"
 #include "Renderer.h"
 #include "SDL.h"
 #include "concurrency.h"
@@ -146,6 +147,30 @@ void OnEvent(SDL_Event *Event) {}
 
 void MTask_PollEvents(void *arg) {
   SDL_Event event;
+  static unsigned int captureTypes[] = {
+      SDL_KEYDOWN,
+      SDL_KEYUP,
+      SDL_MOUSEMOTION,
+      SDL_MOUSEBUTTONDOWN,
+      SDL_MOUSEBUTTONUP,
+      SDL_MOUSEWHEEL,
+      SDL_JOYAXISMOTION,
+      SDL_JOYBALLMOTION,
+      SDL_JOYHATMOTION,
+      SDL_JOYBUTTONDOWN,
+      SDL_JOYBUTTONUP,
+      SDL_JOYDEVICEADDED,
+      SDL_JOYDEVICEREMOVED,
+      SDL_CONTROLLERAXISMOTION,
+      SDL_CONTROLLERBUTTONDOWN,
+      SDL_CONTROLLERBUTTONUP,
+      SDL_CONTROLLERDEVICEADDED,
+      SDL_CONTROLLERDEVICEREMOVED,
+      SDL_FINGERDOWN,
+      SDL_FINGERUP,
+      SDL_FINGERMOTION,
+  };
+
   while (SDL_PollEvent(&event) != 0) {
     OnEvent(&event);
     if (event.type == SDL_QUIT) {
@@ -153,6 +178,12 @@ void MTask_PollEvents(void *arg) {
     }
     if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE) {
       Shutdown();
+    }
+    for (const auto &eid : captureTypes) {
+      if (event.type == eid) {
+        Input::HandleSDLEvent(event);
+        break;
+      }
     }
   }
   // cout << "poll" << endl;

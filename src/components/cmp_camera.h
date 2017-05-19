@@ -15,6 +15,8 @@ public:
   glm::dmat4 GetVP() const;
   cmp_camera();
 
+  void Update(double delta) override;
+
   virtual ~cmp_camera();
 };
 } // namespace sb
