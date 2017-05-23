@@ -30,6 +30,7 @@ sb::cmp_camera &sb::cmp_camera::GetActiveCam() { return *activeCam_; }
 
 void sb::cmp_camera::Update(double delta) {
   Component::Update(delta);
-  const auto trn = glm::vec3(Ent_->GetComponent<sb::cmp_3d>().GetPosition());
-  viewMat_ = glm::lookAt(trn, glm::vec3(), glm::vec3(0, 1.0f, 0));
+  const auto trn = Ent_->GetComponent<sb::cmp_3d>();
+  viewMat_ = glm::inverse(trn.GetTransform());
+  // viewMat_ = glm::lookAt(trn, trn + glm::vec3(0,0,-1.0f), glm::vec3(0, 1.0f, 0));
 }

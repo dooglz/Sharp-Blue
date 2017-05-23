@@ -31,7 +31,7 @@ void CreateScene() {
   auto camera = make_unique<sb::Entity>();
   camera->SetName("Camera");
   // Add 3D component so it exists in space
-  camera->AddComponent(make_unique<sb::cmp_3d>(vec3(10.0f), vec3(-1.0f), vec3(1.0f)));
+  camera->AddComponent(make_unique<sb::cmp_3d>(vec3(0.0f, 0.0f, 10.0f), vec3(0.0f), vec3(1.0f)));
   // Add camera component
   camera->AddComponent(make_unique<sb::cmp_camera>());
   camera->GetComponent<sb::cmp_camera>().SetActive();

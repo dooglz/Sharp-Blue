@@ -29,7 +29,7 @@ public:
 
   const glm::dquat GetRotation() const;
 
-  const glm::dmat4 GetTransform();
+  const glm::dmat4 GetTransform() const;
 
   const bool IsVisible() const;
 

@@ -29,7 +29,7 @@ const glm::dvec3 cmp_3d::GetRotationV3() const { return glm::dvec3(); }
 
 const glm::dquat cmp_3d::GetRotation() const { return rotation_; }
 
-const glm::dmat4 cmp_3d::GetTransform() { return transform_; }
+const glm::dmat4 cmp_3d::GetTransform() const { return transform_; }
 
 const bool cmp_3d::IsVisible() const { return 0; }
 
