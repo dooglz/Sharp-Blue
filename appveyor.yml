@@ -1,5 +1,12 @@
 version: 1.0.{build}
 image: Visual Studio 2017
+
+cache:
+- build/json-src -> CMakeLists.txt, appveyor.yml
+- build/assimp-src -> CMakeLists.txt, appveyor.yml
+- build/glew-src -> CMakeLists.txt, appveyor.yml
+- build/SDL-src -> CMakeLists.txt, appveyor.yml
+  
 configuration:
 - Debug
 - Release

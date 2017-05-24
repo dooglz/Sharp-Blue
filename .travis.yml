@@ -6,6 +6,14 @@ language: generic
 dist: trusty
 sudo: false
 
+cache:
+  directories:
+  - cmake
+  - build/json-src
+  - build/assimp-src
+  - build/glew-src
+  - build/SDL-src
+      
 before_install:
   # Install a recent CMake
   - |
