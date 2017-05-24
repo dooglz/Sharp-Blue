@@ -12,6 +12,8 @@ configuration:
 - Release
 before_build:
 - cmd: >-
+    if not exist build mkdir build
+
     mkdir build
 
     cd build
