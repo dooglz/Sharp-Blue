@@ -9,6 +9,7 @@ class cmp_mesh_renderer : public Component {
 protected:
   Mesh *mesh;
   Effect *effect;
+  void from_json(const nlohmann::json &j);
 
 public:
   cmp_mesh_renderer();

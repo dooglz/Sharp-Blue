@@ -26,11 +26,13 @@ sb::cmp_camera::~cmp_camera() {
   int r = 6;
 }
 
+void sb::cmp_camera::from_json(const nlohmann::json &j) {}
+
 sb::cmp_camera &sb::cmp_camera::GetActiveCam() { return *activeCam_; }
 
 void sb::cmp_camera::Update(double delta) {
   Component::Update(delta);
-  const auto trn = Ent_->GetComponent<sb::cmp_3d>();
+  const sb::cmp_3d &trn(Ent_->GetComponent<sb::cmp_3d>());
   viewMat_ = glm::inverse(trn.GetTransform());
   // viewMat_ = glm::lookAt(trn, trn + glm::vec3(0,0,-1.0f), glm::vec3(0, 1.0f, 0));
 }

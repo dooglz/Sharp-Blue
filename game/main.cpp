@@ -13,12 +13,20 @@ using namespace std;
 using namespace glm;
 
 void CreateScene() {
+
+  json json_3d = {{"component_type", "3D"},
+                  {"position", {0.0, 4.0, 0.0}},
+                  {"rotation", {0.0, 0.0, 0.0}},
+                  {"scale", {1.0, 1.0, 1.0}}};
+
   //  ########### Build a Box ###########
 
   auto box = make_unique<sb::Entity>();
   box->SetName("Box");
   // Add 3D component so it exists in space
-  box->AddComponent(make_unique<sb::cmp_3d>());
+  // box->AddComponent(make_unique<sb::cmp_3d>());
+  // box->AddComponent(unique_ptr<sb::cmp_3d>(sb::Component::MakeRaw<sb::cmp_3d>(json_3d)));
+  box->AddComponent(sb::Component::MakeUnique<sb::cmp_3d>(json_3d));
   // Add mesh renderer
   auto mr = make_unique<sb::cmp_mesh_renderer>();
   mr->SetMesh("sphereI2.obj");

@@ -13,6 +13,7 @@ protected:
   glm::dmat4 transform_;
 
 public:
+  void from_json(const nlohmann::json &j);
   cmp_3d();
   cmp_3d(glm::dvec3 pos, glm::dvec3 rot, glm::dvec3 scale);
   ~cmp_3d();

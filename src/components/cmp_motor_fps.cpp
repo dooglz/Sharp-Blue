@@ -8,6 +8,10 @@ sb::cmp_motor_fps::~cmp_motor_fps() {}
 
 sb::cmp_motor_fps::cmp_motor_fps() : Component("fps_motor") {}
 
+void sb::cmp_motor_fps::from_json(const nlohmann::json & j)
+{
+}
+
 void sb::cmp_motor_fps::Update(double delta) {
   Component::Update(delta);
   const static auto mover = Ent_->GetCompatibleComponent<cmp_3d>();

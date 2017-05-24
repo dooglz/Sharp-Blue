@@ -1,9 +1,11 @@
 #pragma once
+#include "json.hpp"
 #include <map>
 #include <memory>
 #include <string>
 #include <typeindex>
 #include <vector>
+using json = nlohmann::json;
 
 namespace sb {
 
@@ -13,10 +15,22 @@ class Component {
 protected:
   Entity *Ent_;
   bool active_;
+  Component() = delete;
+  Component(const Component &obj) = delete;
 
 public:
+  virtual void from_json(const json &j) = 0;
   std::string token_;
   explicit Component(const std::string &token);
+  // virtual Component(const json &j) = 0;
+  static Component *MakeGeneric(const json &j);
+
+  template <typename T> static T *MakeRaw(const json &j) { return static_cast<T *>(MakeGeneric(j)); }
+
+  template <typename T> static std::unique_ptr<T> MakeUnique(const json &j) {
+    return std::unique_ptr<T>(static_cast<T *>(MakeGeneric(j)));
+  }
+
   virtual ~Component();
   virtual void Update(double delta){};
   virtual void Render(){};
@@ -41,8 +55,13 @@ public:
   virtual void Update(const double delta);
   virtual void Render();
 
-  template <typename T> T &GetComponent() const noexcept {
-    return *static_cast<T *>(components.at(std::type_index(typeid(T))).get());
+  template <typename T> T &GetComponent() const {
+    my_map::const_iterator iter = components.find(std::type_index(typeid(T)));
+
+    if (iter != components.end()) {
+      return *static_cast<T *>(iter->second.get());
+    }
+    throw;
   }
 
   template <typename T> void AddComponent(std::unique_ptr<T> component) noexcept {

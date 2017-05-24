@@ -8,6 +8,7 @@ protected:
   glm::dmat4 projMat_;
   glm::dmat4 viewMat_;
   static cmp_camera *activeCam_;
+  void from_json(const nlohmann::json &j);
 
 public:
   static cmp_camera &GetActiveCam();

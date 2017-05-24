@@ -5,6 +5,8 @@
 namespace sb {
 class cmp_motor_fps : public Component {
 protected:
+  void from_json(const nlohmann::json &j);
+
 public:
   void Update(double delta) override;
 

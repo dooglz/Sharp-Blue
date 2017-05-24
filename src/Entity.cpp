@@ -4,6 +4,11 @@
 
 #include "Entity.h"
 //#include "game.h"
+#include "components/cmp_3d.h"
+#include "components/cmp_camera.h"
+#include "components/cmp_light.h"
+#include "components/cmp_mesh_renderer.h"
+#include "components/cmp_motor_fps.h"
 #include <algorithm>
 #include <iostream>
 //#include <glm/gtx/transform.hpp>
@@ -15,6 +20,35 @@ Component::Component(const string &token) : token_(token) {
   Ent_ = nullptr;
   active_ = false;
 }
+
+Component *Component::MakeGeneric(const json &j) {
+  const string ctype = j.at("component_type").get<string>();
+  Component *cmp;
+  if (ctype == "3D") {
+    cmp = new cmp_3d();
+  } else if (ctype == "camera") {
+    cmp = new cmp_camera();
+  } else if (ctype == "Light") {
+    cmp = new cmp_light();
+  } else if (ctype == "Mesh_Renderer") {
+    cmp = new cmp_mesh_renderer();
+  } else if (ctype == "fps_motor") {
+    cmp = new cmp_motor_fps();
+  } else {
+    cmp = nullptr;
+  }
+  cmp->from_json(j);
+
+  return cmp;
+}
+
+/*
+void Component::from_json(const nlohmann::json & j, Component & c)
+{
+  const string ctype = j.at("component_type").get<string>();
+  if (ctype)
+}
+*/
 
 Component::~Component() {
   cout << "Goodbye from Component: " << token_ << endl;

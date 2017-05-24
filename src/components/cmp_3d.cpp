@@ -3,12 +3,20 @@
 //
 
 #include "cmp_3d.h"
+#include "../utils.h"
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
 
 namespace sb {
+
+void cmp_3d::from_json(const nlohmann::json &j) {
+  SetPosition(SVecToGVec3(j.at("position").get<std::vector<double>>()));
+  SetRotation(SVecToGVec3(j.at("rotation").get<std::vector<double>>()));
+  SetScale(SVecToGVec3(j.at("scale").get<std::vector<double>>()));
+}
+
 cmp_3d::cmp_3d()
     : scale_(glm::dvec3(1.0f)), rotation_(glm::dquat()), position_(glm::dvec3()), changed_(false), Component("3D") {}
 

@@ -6,6 +6,10 @@
 #include <Renderer.h>
 #include <glm/gtx/quaternion.hpp>
 
+void sb::cmp_light::from_json(const nlohmann::json & j)
+{
+}
+
 sb::cmp_light::cmp_light() : Component("Light") {}
 
 void sb::cmp_light::Render() {
