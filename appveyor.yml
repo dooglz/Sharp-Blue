@@ -6,7 +6,8 @@ cache:
 - build/assimp-src -> CMakeLists.txt, appveyor.yml
 - build/glew-src -> CMakeLists.txt, appveyor.yml
 - build/SDL-src -> CMakeLists.txt, appveyor.yml
-  
+- build/glm-src -> CMakeLists.txt, appveyor.yml
+
 configuration:
 - Debug
 - Release

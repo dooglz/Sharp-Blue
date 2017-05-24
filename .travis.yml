@@ -13,7 +13,8 @@ cache:
   - build/assimp-src
   - build/glew-src
   - build/SDL-src
-      
+  - build/glm-src
+   
 before_install:
   # Install a recent CMake
   - |
